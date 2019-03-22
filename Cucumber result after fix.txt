@@ -1,0 +1,114 @@
+ec2-user:~/environment/typo (master) $ bundle exec rake cucumber
+NOTICE:  CREATE TABLE will create implicit sequence "blogs_id_seq" for serial column "blogs.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "blogs_pkey" for table "blogs"
+NOTICE:  CREATE TABLE will create implicit sequence "categories_id_seq" for serial column "categories.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "categories_pkey" for table "categories"
+NOTICE:  CREATE TABLE will create implicit sequence "categorizations_id_seq" for serial column "categorizations.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "categorizations_pkey" for table "categorizations"
+NOTICE:  CREATE TABLE will create implicit sequence "contents_id_seq" for serial column "contents.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "contents_pkey" for table "contents"
+NOTICE:  CREATE TABLE will create implicit sequence "feedback_id_seq" for serial column "feedback.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "feedback_pkey" for table "feedback"
+NOTICE:  CREATE TABLE will create implicit sequence "notifications_id_seq" for serial column "notifications.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "notifications_pkey" for table "notifications"
+NOTICE:  CREATE TABLE will create implicit sequence "page_caches_id_seq" for serial column "page_caches.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "page_caches_pkey" for table "page_caches"
+NOTICE:  CREATE TABLE will create implicit sequence "pings_id_seq" for serial column "pings.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "pings_pkey" for table "pings"
+NOTICE:  CREATE TABLE will create implicit sequence "post_types_id_seq" for serial column "post_types.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "post_types_pkey" for table "post_types"
+NOTICE:  CREATE TABLE will create implicit sequence "profiles_id_seq" for serial column "profiles.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "profiles_pkey" for table "profiles"
+NOTICE:  CREATE TABLE will create implicit sequence "redirections_id_seq" for serial column "redirections.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "redirections_pkey" for table "redirections"
+NOTICE:  CREATE TABLE will create implicit sequence "redirects_id_seq" for serial column "redirects.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "redirects_pkey" for table "redirects"
+NOTICE:  CREATE TABLE will create implicit sequence "resources_id_seq" for serial column "resources.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "resources_pkey" for table "resources"
+NOTICE:  CREATE TABLE will create implicit sequence "rights_id_seq" for serial column "rights.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "rights_pkey" for table "rights"
+NOTICE:  CREATE TABLE will create implicit sequence "sidebars_id_seq" for serial column "sidebars.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "sidebars_pkey" for table "sidebars"
+NOTICE:  CREATE TABLE will create implicit sequence "sitealizer_id_seq" for serial column "sitealizer.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "sitealizer_pkey" for table "sitealizer"
+NOTICE:  CREATE TABLE will create implicit sequence "tags_id_seq" for serial column "tags.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "tags_pkey" for table "tags"
+NOTICE:  CREATE TABLE will create implicit sequence "text_filters_id_seq" for serial column "text_filters.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "text_filters_pkey" for table "text_filters"
+NOTICE:  CREATE TABLE will create implicit sequence "triggers_id_seq" for serial column "triggers.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "triggers_pkey" for table "triggers"
+NOTICE:  CREATE TABLE will create implicit sequence "users_id_seq" for serial column "users.id"
+NOTICE:  CREATE TABLE / PRIMARY KEY will create implicit index "users_pkey" for table "users"
+/home/ec2-user/.rvm/rubies/ruby-1.9.3-p551/bin/ruby -S bundle exec cucumber  --profile default
+Using the default profile...
+/home/ec2-user/.rvm/gems/ruby-1.9.3-p551/gems/activesupport-3.0.17/lib/active_support/dependencies.rb:242:in `block in require': iconv will be deprecated in the future, use String#encode instead.
+Feature: Create Blog
+  As an author
+  In order to gift my thoughts to the world
+  I want to create a blog
+
+  Scenario: Create blog page shown      # features/create_blog.feature:6
+    Given I am on the home page         # features/step_definitions/web_steps.rb:68
+    Then I should see "Welcome"         # features/step_definitions/web_steps.rb:129
+    And I should see "My Shiny Weblog!" # features/step_definitions/web_steps.rb:129
+
+  Scenario: Create blog page not shown when blog created # features/create_blog.feature:11
+    Given the blog is set up                             # features/step_definitions/web_steps.rb:34
+    When I am on the home page                           # features/step_definitions/web_steps.rb:68
+    Then I should not see "My Shiny Weblog!"             # features/step_definitions/web_steps.rb:147
+    And I should see "Teh Blag"                          # features/step_definitions/web_steps.rb:129
+
+Feature: Create categories
+  As an blog administrator
+  In order to share my thoughts to the world
+  I want to be able to add categories to my blog
+
+  Background:                            # features/create_categories.feature:6
+    Given the blog is set up             # features/step_definitions/web_steps.rb:34
+    And I am logged into the admin panel # features/step_definitions/web_steps.rb:46
+
+  Scenario: Successfully Create categories             # features/create_categories.feature:10
+    Given I am on the new categories page              # features/step_definitions/web_steps.rb:68
+    When I fill in "category_name" with "books"        # features/step_definitions/web_steps.rb:84
+    And I fill in "category_keywords" with "romantic"  # features/step_definitions/web_steps.rb:84
+    And I fill in "category_permalink" with "yes"      # features/step_definitions/web_steps.rb:84
+    And I fill in "category_description" with "desc"   # features/step_definitions/web_steps.rb:84
+    And I press "Save"                                 # features/step_definitions/web_steps.rb:76
+    Then I should see "books"                          # features/step_definitions/web_steps.rb:129
+    Then I should see "romantic"                       # features/step_definitions/web_steps.rb:129
+    Then I should see "yes"                            # features/step_definitions/web_steps.rb:129
+    Then I should see "desc"                           # features/step_definitions/web_steps.rb:129
+    Then I follow "books"                              # features/step_definitions/web_steps.rb:80
+    When I fill in "category_name" with "books1"       # features/step_definitions/web_steps.rb:84
+    And I fill in "category_keywords" with "romantic1" # features/step_definitions/web_steps.rb:84
+    And I fill in "category_permalink" with "yes1"     # features/step_definitions/web_steps.rb:84
+    And I fill in "category_description" with "desc1"  # features/step_definitions/web_steps.rb:84
+    And I press "Save"                                 # features/step_definitions/web_steps.rb:76
+    Then I should see "books1"                         # features/step_definitions/web_steps.rb:129
+    Then I should see "romantic1"                      # features/step_definitions/web_steps.rb:129
+    Then I should see "yes1"                           # features/step_definitions/web_steps.rb:129
+    Then I should see "desc1"                          # features/step_definitions/web_steps.rb:129
+
+Feature: Write Articles
+  As a blog administrator
+  In order to share my thoughts with the world
+  I want to be able to add articles to my blog
+
+  Background:                            # features/write_article.feature:6
+    Given the blog is set up             # features/step_definitions/web_steps.rb:34
+    And I am logged into the admin panel # features/step_definitions/web_steps.rb:46
+
+  Scenario: Successfully write articles                                  # features/write_article.feature:10
+    Given I am on the new article page                                   # features/step_definitions/web_steps.rb:68
+    When I fill in "article_title" with "Foobar"                         # features/step_definitions/web_steps.rb:84
+    And I fill in "article__body_and_extended_editor" with "Lorem Ipsum" # features/step_definitions/web_steps.rb:84
+    And I press "Publish"                                                # features/step_definitions/web_steps.rb:76
+    Then I should be on the admin content page                           # features/step_definitions/web_steps.rb:254
+    When I go to the home page                                           # features/step_definitions/web_steps.rb:72
+    Then I should see "Foobar"                                           # features/step_definitions/web_steps.rb:129
+    When I follow "Foobar"                                               # features/step_definitions/web_steps.rb:80
+    Then I should see "Lorem Ipsum"                                      # features/step_definitions/web_steps.rb:129
+
+4 scenarios (4 passed)
+40 steps (40 passed)
+0m2.002s
